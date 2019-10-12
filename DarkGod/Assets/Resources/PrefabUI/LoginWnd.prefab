@@ -223,6 +223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224195893127577762}
+  - component: {fileID: 114579970765551304}
   m_Layer: 0
   m_Name: LoginWnd
   m_TagString: Untagged
@@ -525,6 +526,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114579970765551304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1789340818973290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 005b1a07f81dcd241943a5d2b3526e1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btnNotice: {fileID: 114944309100526060}
+  btnEnterGame: {fileID: 114090163365791256}
+  iptAccount: {fileID: 114963016247932502}
+  iptPassword: {fileID: 114238435323894572}
 --- !u!114 &114804064508949486
 MonoBehaviour:
   m_ObjectHideFlags: 1
