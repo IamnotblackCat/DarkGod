@@ -9,13 +9,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoginSys : MonoBehaviour 
+public class LoginSys : SystemRoot 
 {
     public static LoginSys instance = null;
 
     public LoginWnd loginWnd;
-    public void InitSys()
+    public override void InitSys()
     {
+        base.InitSys();
         instance = this;
         Debug.Log("初始化登陆系统完成");
     }
@@ -23,12 +24,14 @@ public class LoginSys : MonoBehaviour
     public void EnterLogin()
     {
         //异步加载登陆场景——委托如果读条完成，显示登陆界面
-        ResSvc.instance.AsyncLoadScene(Constants.SceneLogin,()=> 
-        {
-            loginWnd.gameObject.SetActive(true);
-            loginWnd.InitLogin();
-        });
         //显示加载进度
-        //加载完成以后打开登陆界面
+        resSvc.AsyncLoadScene(Constants.SceneLogin,()=>
+        {
+            //加载完成以后打开登陆界面
+            loginWnd.SetWndState();
+            audioSvc.PlayBGMusic(Constants.BGLogin);
+            //loginWnd.gameObject.SetActive(true);
+            //loginWnd.in();
+        });
     }
 }

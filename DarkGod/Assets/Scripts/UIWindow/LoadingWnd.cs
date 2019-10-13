@@ -9,7 +9,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadingWnd : MonoBehaviour 
+public class LoadingWnd : WindowRoot 
 {
     public Text textTips;
     public Image imgFg;
@@ -18,18 +18,19 @@ public class LoadingWnd : MonoBehaviour
 
     private float fgWidth;
 
-    public void InitWnd()
+    protected override void InitWnd()
     {//为了获得填充条的宽度
         fgWidth = imgFg.GetComponent<RectTransform>().sizeDelta.x;
 
-        textTips.text = "这是一条游戏tips";
+        SetText(textTips, "这是一条游戏tips");
+        SetText(textProgress, "0%");
         imgFg.fillAmount = 0;
         imgPoint.transform.position = new Vector3(-fgWidth/2, 0,0);
-        textProgress.text = "0%";
+        
     }
     public void SetProgress(float prg)
     {
-        textProgress.text = (int)(prg * 100) + "%";
+        SetText(textProgress, (int)(prg * 100) + "%");
         imgFg.fillAmount = prg;
 
         float posX = prg * fgWidth - 545;

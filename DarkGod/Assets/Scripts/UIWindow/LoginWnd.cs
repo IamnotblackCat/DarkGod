@@ -9,15 +9,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginWnd : MonoBehaviour 
+public class LoginWnd : WindowRoot 
 {
     public Button btnNotice;
     public Button btnEnterGame;
     public InputField iptAccount;
     public InputField iptPassword;
 
-    public void InitLogin()
+    protected override void InitWnd()
     {
+        base.InitWnd();
+        //本地存储的账号密码
         if (PlayerPrefs.HasKey("inputAccount")&&PlayerPrefs.HasKey("inputPassword"))
         {
             iptAccount.text = PlayerPrefs.GetString("inputAccount");

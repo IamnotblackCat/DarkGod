@@ -7,6 +7,7 @@
 *****************************************************/
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,8 +22,9 @@ public class ResSvc : MonoBehaviour
     private Action prgCB = null;//这个委托为了能在update里面实时更新进度值
     public void AsyncLoadScene(string sceneName,Action loaded)//参数委托为了复用这个函数
     {//loading界面是复用的代码
-        GameRoot.instance.loadingWnd.gameObject.SetActive(true);
-        GameRoot.instance.loadingWnd.InitWnd();
+
+        //GameRoot.instance.loadingWnd.setwind;
+        GameRoot.instance.loadingWnd.SetWndState(true);
 
         AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
         prgCB = () =>
@@ -37,7 +39,7 @@ public class ResSvc : MonoBehaviour
                 }
                 prgCB = null;
                 sceneAsync = null;
-                GameRoot.instance.loadingWnd.gameObject.SetActive(false);
+                GameRoot.instance.loadingWnd.SetWndState(false);
             }
         };
         
@@ -48,5 +50,20 @@ public class ResSvc : MonoBehaviour
         {
             prgCB();
         }
+    }
+    private Dictionary<string, AudioClip> audioDic = new Dictionary<string, AudioClip>();
+    public AudioClip LoadAudio(string path,bool cache=false)
+    {
+        AudioClip au = null;
+        if (!audioDic.TryGetValue(path,out au))
+        {
+            au = Resources.Load<AudioClip>(path);
+            if (cache)//如果需要缓存
+            {
+                audioDic.Add(path, au);
+            }
+            Debug.Log(path+"au: "+au.name);
+        }
+        return au;
     }
 }

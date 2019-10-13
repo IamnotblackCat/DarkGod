@@ -12,4 +12,7 @@ public class Constants
 {
     //场景类名
     public const string SceneLogin = "SceneLogin";
+
+    //音效名
+    public const string BGLogin = "bgLogin";
 }
