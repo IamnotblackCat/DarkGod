@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 114369284205511480}
   - component: {fileID: 114155062005809900}
   m_Layer: 0
-  m_Name: randName
+  m_Name: randNameBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,13 +106,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224663496271638816}
+  - component: {fileID: 114935569755812082}
   m_Layer: 0
   m_Name: CreateWnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1371065130353760
 GameObject:
   m_ObjectHideFlags: 1
@@ -446,7 +447,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114369284205511480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114935569755812082}
+        m_MethodName: ClickRandomBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114205606648283498
@@ -892,7 +904,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114567446364738194}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114935569755812082}
+        m_MethodName: ClickEnterBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114885490556402058
@@ -909,6 +932,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &114935569755812082
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1207185553874564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07affe994bd7a049b517e86164199a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iptRDName: {fileID: 114246538573217046}
 --- !u!222 &222065141811872366
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1051,7 +1086,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -256.4, y: -0.20001}
+  m_AnchoredPosition: {x: -256.4004, y: -0.20001}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224170480072772456
@@ -1316,7 +1351,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 268.4, y: 0}
+  m_AnchoredPosition: {x: 268.4004, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224980140812609100

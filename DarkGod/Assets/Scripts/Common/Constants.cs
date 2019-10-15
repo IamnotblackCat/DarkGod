@@ -15,4 +15,9 @@ public class Constants
 
     //音效名
     public const string BGLogin = "bgLogin";
+    public const string uiClick = "uiClickBtn";
+
+    //登陆音效
+    public const string uiLogin = "uiLoginBtn";
+
 }

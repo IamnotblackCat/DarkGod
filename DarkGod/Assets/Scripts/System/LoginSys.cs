@@ -14,6 +14,7 @@ public class LoginSys : SystemRoot
     public static LoginSys instance = null;
 
     public LoginWnd loginWnd;
+    public CreateWnd createWnd;
     public override void InitSys()
     {
         base.InitSys();
@@ -33,5 +34,12 @@ public class LoginSys : SystemRoot
             //loginWnd.gameObject.SetActive(true);
             //loginWnd.in();
         });
+    }
+    public void RspLogin()
+    {
+        GameRoot.instance.AddTips("登陆成功");
+        //先开，再关
+        createWnd.SetWndState(true);
+        loginWnd.SetWndState(false);
     }
 }

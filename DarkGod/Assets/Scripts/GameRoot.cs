@@ -12,11 +12,14 @@ public class GameRoot : MonoBehaviour
 {
     public static GameRoot instance = null;
     public LoadingWnd loadingWnd;
+    public DynamicWnd dynamicWnd;
+
     private void Start()
     {
         instance = this;
         DontDestroyOnLoad(this);
         Debug.Log("游戏开始。。。");
+        ClearUIRoot();
         Init();    
     }
     private void Init()
@@ -31,5 +34,22 @@ public class GameRoot : MonoBehaviour
         LoginSys loginSys = GetComponent<LoginSys>();
         loginSys.InitSys();
         loginSys.EnterLogin();
+
+        //AddTips("Test1");
+        //AddTips("Test2");
+    }
+    //初始化的时候确保所有的UI除了提示面板都是隐藏的
+    private void ClearUIRoot()
+    {
+        Transform canvasTrans = transform.Find("Canvas");
+        for (int i = 0; i < canvasTrans.childCount; i++)
+        { 
+            canvasTrans.GetChild(i).gameObject.SetActive(false);
+        }
+        dynamicWnd.SetWndState();
+    }
+    public void AddTips(string tips)
+    {
+        dynamicWnd.AddTips(tips);
     }
 }

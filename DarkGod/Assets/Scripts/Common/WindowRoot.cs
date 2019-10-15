@@ -33,7 +33,7 @@ public class WindowRoot : MonoBehaviour
         resSvc = ResSvc.instance;
         audioSvc = AudioSvc.instance;
     }
-    //窗口关闭的时候要释放引用。
+    //窗口关闭的时候要释放引用。 
     protected virtual void ClearWnd()
     {
         resSvc = null;
