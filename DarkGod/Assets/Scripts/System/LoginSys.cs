@@ -6,6 +6,7 @@
 	功能：登陆注册业务系统
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,7 +20,7 @@ public class LoginSys : SystemRoot
     {
         base.InitSys();
         instance = this;
-        Debug.Log("初始化登陆系统完成");
+        PECommon.Log("初始化登陆系统完成");
     }
     //进入登陆场景
     public void EnterLogin()
@@ -35,9 +36,10 @@ public class LoginSys : SystemRoot
             //loginWnd.in();
         });
     }
-    public void RspLogin()
+    public void RspLogin(GameMsg msg)
     {
         GameRoot.instance.AddTips("登陆成功");
+        GameRoot.instance.SetPlayerData(msg.respLogin);
         //先开，再关
         createWnd.SetWndState(true);
         loginWnd.SetWndState(false);

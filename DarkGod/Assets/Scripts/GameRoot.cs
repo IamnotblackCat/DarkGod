@@ -6,6 +6,7 @@
 	功能：游戏启动入口
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 
 public class GameRoot : MonoBehaviour 
@@ -18,25 +19,29 @@ public class GameRoot : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(this);
-        Debug.Log("游戏开始。。。");
+        PECommon.Log("游戏开始。。。");
         ClearUIRoot();
         Init();    
     }
     private void Init()
     {
-        //启动资源加载服务
+
+        //服务模块初始化
+        NetService netService = GetComponent<NetService>();
+        netService.InitSvc();
         ResSvc resSvc = GetComponent<ResSvc>();
         resSvc.InitSvc();
-        //启动音乐资源加载
         AudioSvc audioSvc = GetComponent<AudioSvc>();
         audioSvc.InitSvc();
-        //启动登陆界面初始化
+
+        //业务系统初始化
         LoginSys loginSys = GetComponent<LoginSys>();
         loginSys.InitSys();
+
+        //进入登陆场景并加载UI
         loginSys.EnterLogin();
 
-        //AddTips("Test1");
-        //AddTips("Test2");
+        
     }
     //初始化的时候确保所有的UI除了提示面板都是隐藏的
     private void ClearUIRoot()
@@ -52,4 +57,14 @@ public class GameRoot : MonoBehaviour
     {
         dynamicWnd.AddTips(tips);
     }
+    private PlayerData playerData;
+    public PlayerData Playerdata
+    {
+        get { return playerData; }
+    }
+    public void SetPlayerData(ResponLogin data)
+    {
+        playerData = data.playerData;
+    }
+
 }

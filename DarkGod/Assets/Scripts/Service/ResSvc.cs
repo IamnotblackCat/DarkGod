@@ -21,7 +21,7 @@ public class ResSvc : MonoBehaviour
     {
         instance = this;
         InitRDNameCfg();
-        Debug.Log("启动资源加载...");
+        PECommon.Log("启动资源加载...");
     }
     private Action prgCB = null;//这个委托为了能在update里面实时更新进度值
     public void AsyncLoadScene(string sceneName,Action loaded)//参数委托为了复用这个函数
@@ -66,7 +66,7 @@ public class ResSvc : MonoBehaviour
             {
                 audioDic.Add(path, au);
             }
-            //Debug.Log(path+"au: "+au.name);
+            //PECommon.Log(path+"au: "+au.name);
         }
         return au;
     }
@@ -80,7 +80,7 @@ public class ResSvc : MonoBehaviour
         TextAsset xml = Resources.Load<TextAsset>("ResCfgs/"+PathDefine.RDName);
         if (!xml)
         {
-            Debug.LogError("指定文件不存在，路径："+PathDefine.RDName);
+            PECommon.Log("指定文件不存在，路径："+PathDefine.RDName,LogType.Error);
         }
         else
         {
@@ -119,7 +119,7 @@ public class ResSvc : MonoBehaviour
     }
     public string GetRDNameData(bool man=true)//默认男性角色
     {
-        System.Random rd = new System.Random();
+        //System.Random rd = new System.Random();
 
         string rdName = surNameList[PETools.RDInt(0, surNameList.Count - 1)];
         if (man)

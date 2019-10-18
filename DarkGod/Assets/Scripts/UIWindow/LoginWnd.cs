@@ -6,6 +6,7 @@
 	功能：登陆界面功能
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,18 +36,26 @@ public class LoginWnd : WindowRoot
     public void ClickEnterGame()
     {
         audioSvc.PlayUIAudio(Constants.uiLogin);
-        string acct= iptAccount.text;
-        string pass = iptPassword.text;
-        if (acct!=""&&pass!="")
+        string _acct= iptAccount.text;
+        string _pass = iptPassword.text;
+        if (_acct!=""&&_pass!="")
         {
             //存储账号密码
-            PlayerPrefs.SetString("acct",acct);
-            PlayerPrefs.SetString("pass",pass);
+            PlayerPrefs.SetString("acct",_acct);
+            PlayerPrefs.SetString("pass",_pass);
 
             //发送网络消息，请求登陆
-
-            //模拟 接收成功——这些代码后面会删除
-            LoginSys.instance.RspLogin();
+            GameMsg msg = new GameMsg
+            {
+                cmd = (int)CMD.RequestLogin,
+                reqLogin = new RequestLogin
+                {
+                    acct = _acct,
+                    pass=_pass
+                }
+            };
+            netService.SendMsg(msg);
+            
         }
         else
         {

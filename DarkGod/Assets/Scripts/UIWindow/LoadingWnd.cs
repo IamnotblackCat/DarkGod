@@ -34,7 +34,7 @@ public class LoadingWnd : WindowRoot
         imgFg.fillAmount = prg;
 
         float posX = prg * fgWidth - 545;
-        //Debug.Log(posX+"prg: "+prg+"fgWidth: "+fgWidth);
+        //PECommon.Log(posX+"prg: "+prg+"fgWidth: "+fgWidth);
         //相对于锚点的参考位置
         imgPoint.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX,0);
     }
