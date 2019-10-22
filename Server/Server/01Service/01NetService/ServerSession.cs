@@ -20,6 +20,7 @@ public class ServerSession:PESession<GameMsg>
     protected override void OnReciveMsg(GameMsg msg)
     {
         PECommon.Log("RecivePack CMD: "+((CMD)msg.cmd).ToString());
+        NetService.Instance.AddMsgQue(this,msg);
         //SendMsg(new GameMsg { text = "SrvRsp:" + msg.text });
     }
     protected override void OnDisConnected()

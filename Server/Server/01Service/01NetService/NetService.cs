@@ -72,7 +72,8 @@ public class NetService
             case CMD.RequestLogin:
                 LoginSys.Instance.ReqLogin(msgPack);
                 break;
-            case CMD.ResponLogin:
+            case CMD.ReqRename:
+                LoginSys.Instance.ReqRename(msgPack);
                 break;
             default:
                 break;

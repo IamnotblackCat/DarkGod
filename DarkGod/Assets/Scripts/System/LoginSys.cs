@@ -40,8 +40,19 @@ public class LoginSys : SystemRoot
     {
         GameRoot.instance.AddTips("登陆成功");
         GameRoot.instance.SetPlayerData(msg.respLogin);
-        //先开，再关
-        createWnd.SetWndState(true);
+        if (msg.respLogin.playerData.name=="")
+        {//打开角色创建面板
+            createWnd.SetWndState();
+        }
         loginWnd.SetWndState(false);
+    }
+    public void RspRename(GameMsg msg)
+    {
+        GameRoot.instance.SetPlayerName(msg.respondRename.name);
+
+        //跳转场景进入主城，打开主城界面
+
+        //关闭创建面板
+        createWnd.SetWndState(false);
     }
 }

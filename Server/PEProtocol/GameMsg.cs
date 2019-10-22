@@ -16,7 +16,10 @@ namespace PEProtocol
     {//这里的目的是将信息进行分类区分，明确信息的意义
         public RequestLogin reqLogin;
         public ResponLogin respLogin;
+        public ReqRename reqRename;
+        public RespondRename respondRename;
     }
+    #region 登陆相关
     [Serializable]
     public class RequestLogin
     {
@@ -32,18 +35,31 @@ namespace PEProtocol
     public class PlayerData
     {
         public int id;
-        public int lv;
         public string name;
+        public int lv;
+        public int exp;
+        public int power;
         public int coin;
         public int diamond;
-        public int power;
-        public int exp;
     }
+    [Serializable]
+    public class ReqRename
+    {
+        public string name;
+    }
+    [Serializable]
+    public class RespondRename
+    {
+        public string name;
+    }
+    #endregion
     public enum ErroroCode
     {
         None=0,//没有错误
+        UpdateDBError,//数据库更新出错
         AcctIsOnline,//账号已经上线
         WrongPass,
+        NameIsExist,//名字已存在
     }
     public enum CMD
     {
@@ -51,7 +67,8 @@ namespace PEProtocol
         //登陆相关100
         RequestLogin=101,
         ResponLogin=102,
-    
+        ReqRename=103,
+        RespondRename=104,
     }
     public class ServiceConfig
     {

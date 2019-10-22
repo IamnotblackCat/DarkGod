@@ -25,8 +25,10 @@ public class CacheServer
     }
     private Dictionary<string, ServerSession> onLineAcct = new Dictionary<string, ServerSession>();
     private Dictionary<ServerSession, PlayerData> onLineSessionDic = new Dictionary<ServerSession, PlayerData>();
+    private DBmanager db;
     public void Init()
     {
+        db = DBmanager.Instance;
         PECommon.Log("CacheServer Init Done");
     }
     public bool IsAcctOnLine(string acct)
@@ -39,7 +41,7 @@ public class CacheServer
     public PlayerData GetPlayerData(string acct,string pass)
     {
         //TODO  从数据库中查找账号数据
-        return null;
+        return db.QueryPlayerdata(acct,pass);
     }
     /// <summary>
     /// 账号上线缓存数据
@@ -48,5 +50,24 @@ public class CacheServer
     {
         onLineAcct.Add(acct,serverSession);
         onLineSessionDic.Add(serverSession,playerData);
+    }
+    public bool IsNameExist(string name)
+    {
+        return db.QueryNameIsExist(name);
+    }
+    public PlayerData UpdatePlayerData(ServerSession session)
+    {
+        if (onLineSessionDic.TryGetValue(session,out PlayerData playerData))
+        {
+            return playerData;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public bool UpdatePlayerData(int id,PlayerData playerData)
+    {
+        return db.UpdatePlayerData(id,playerData);
     }
 }

@@ -6,6 +6,7 @@
 	功能：创建角色面板
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +31,15 @@ public class CreateWnd : WindowRoot
         if (iptRDName.text!="")
         {
             //发送名字到服务器，登陆主城
-
+            GameMsg msg = new GameMsg
+            {
+                cmd = (int)CMD.ReqRename,
+                reqRename = new ReqRename
+                {
+                    name = iptRDName.text
+                }
+            };
+            netService.SendMsg(msg);
         }
         else
         {

@@ -22,9 +22,7 @@ public class NetService : MonoBehaviour
     public void InitSvc()
     {
         instance = this;
-        PECommon.Log("Init NetServece");
         client = new PESocket<ClientSession, GameMsg>();
-        client.StartAsClient(ServiceConfig.srvIP, ServiceConfig.srvPort);
         //根据回调的不同等级
         client.SetLog(true, (string msg, int lv) =>
         {
@@ -50,6 +48,8 @@ public class NetService : MonoBehaviour
                     break;
             }
         });
+        client.StartAsClient(ServiceConfig.srvIP, ServiceConfig.srvPort);
+        PECommon.Log("Init NetServece");
     }
     public void SendMsg(GameMsg msg)
     {
@@ -88,6 +88,10 @@ public class NetService : MonoBehaviour
         {
             switch ((ErroroCode)msg.err)
             {
+                case ErroroCode.UpdateDBError:
+                    PECommon.Log("数据库更新异常",LogType.Error);
+                    GameRoot.instance.AddTips("网络不稳定");
+                    break;
                 case ErroroCode.AcctIsOnline:
                     GameRoot.instance.AddTips("当前账号已在线");
                     break;
@@ -97,13 +101,15 @@ public class NetService : MonoBehaviour
                 default:
                     break;
             }
+            return;
         }
         switch ((CMD)msg.cmd)
         {
-            case CMD.RequestLogin:
-                break;
             case CMD.ResponLogin://去登陆系统处理服务器回应的消息
                 LoginSys.instance.RspLogin(msg);
+                break;
+            case CMD.RespondRename:
+                LoginSys.instance.RspRename(msg);
                 break;
             default:
                 break;

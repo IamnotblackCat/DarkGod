@@ -23,7 +23,7 @@ public class ServerRoot
     public void Init()
     {
         //数据库层
-
+        DBmanager.Instance.Init();
         //服务层
         CacheServer.Instance.Init();
         NetService.Instance.Init();
