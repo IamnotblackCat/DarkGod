@@ -12,12 +12,18 @@ public class Constants
 {
     //场景类名
     public const string SceneLogin = "SceneLogin";
+    public const string SceneMainCity = "SceneMainCity";
 
     //音效名
     public const string BGLogin = "bgLogin";
+    public const string BGMainCity = "bgMainCity";
     public const string uiClick = "uiClickBtn";
+    public const string uiExtenBtn = "uiExtenBtn";
 
     //登陆音效
     public const string uiLogin = "uiLoginBtn";
 
+    //屏幕标准宽高
+    public const int screenStandardWidth = 1334;
+    public const int screenStandardHeight = 750;
 }

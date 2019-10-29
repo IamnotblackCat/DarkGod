@@ -34,4 +34,13 @@ public class ServerRoot
     {
         NetService.Instance.Update();
     }
+    private int session = 0;
+    public int GetSession()
+    {
+        if (session == int.MaxValue)
+        {
+            session = 0;
+        }
+        return session += 1;
+    }
 }

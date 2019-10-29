@@ -12,19 +12,21 @@ using PEProtocol;
 
 public class ServerSession:PESession<GameMsg>
 {
+    public int session = ServerRoot.Instance.GetSession();
     protected override void OnConnected()
     {
-        PECommon.Log("Client is connected");
+        PECommon.Log("Session:"+session+"--Client is connected");
         //SendMsg(new GameMsg { text = "Welcome to connect" });
     }
     protected override void OnReciveMsg(GameMsg msg)
     {
-        PECommon.Log("RecivePack CMD: "+((CMD)msg.cmd).ToString());
+        PECommon.Log("Session:" + session + "RecivePack CMD: " +((CMD)msg.cmd).ToString());
         NetService.Instance.AddMsgQue(this,msg);
         //SendMsg(new GameMsg { text = "SrvRsp:" + msg.text });
     }
     protected override void OnDisConnected()
     {
-        PECommon.Log("Client is disConnected");
+        LoginSys.Instance.ClearOfflineData(this);
+        PECommon.Log("Session:"+session+"--Client is disConnected");
     }
 }

@@ -6,6 +6,7 @@
 	功能：客户端服务端公用工具类，这个放在协议工程里面就两个端都能用，因为解决方案放在Unity里面了
 *****************************************************/
 using PENet;
+using PEProtocol;
 
 public enum LogType
 {
@@ -20,5 +21,17 @@ public class PECommon
     {
         LogLevel lv=(LogLevel)tp;
        PETool.LogMsg(msg,lv);
+    }
+    public static int GetFightByPlayerData(PlayerData pd)
+    {
+        return pd.lv * 100 + pd.ad + pd.ap + pd.addef + pd.apdef;
+    }
+    public static int GetPowerLimit(int lv)
+    {
+        return (lv - 1) / 10 * 150 + 150;
+    }
+    public static int GetExpUpValByLv(int lv)
+    {
+        return 100 * lv * lv;
     }
 }

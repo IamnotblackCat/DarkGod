@@ -110,4 +110,8 @@ public class LoginSys
         //发送回去
         pack.serverSession.SendMsg(msg);
     }
+    public void ClearOfflineData(ServerSession serverSession)
+    {
+        cacheSrv.AcctOffLine(serverSession);
+    }
 }

@@ -38,18 +38,18 @@ public class CacheServer
     /// <summary>
     /// 根据账号密码返回玩家数据，密码错误返回null，账号不存在默认创建新的账号
     /// </summary>
-    public PlayerData GetPlayerData(string acct,string pass)
+    public PlayerData GetPlayerData(string acct, string pass)
     {
         //TODO  从数据库中查找账号数据
-        return db.QueryPlayerdata(acct,pass);
+        return db.QueryPlayerdata(acct, pass);
     }
     /// <summary>
     /// 账号上线缓存数据
     /// </summary>
-    public void AcctOnline(string acct,ServerSession serverSession,PlayerData playerData)
+    public void AcctOnline(string acct, ServerSession serverSession, PlayerData playerData)
     {
-        onLineAcct.Add(acct,serverSession);
-        onLineSessionDic.Add(serverSession,playerData);
+        onLineAcct.Add(acct, serverSession);
+        onLineSessionDic.Add(serverSession, playerData);
     }
     public bool IsNameExist(string name)
     {
@@ -57,7 +57,7 @@ public class CacheServer
     }
     public PlayerData UpdatePlayerData(ServerSession session)
     {
-        if (onLineSessionDic.TryGetValue(session,out PlayerData playerData))
+        if (onLineSessionDic.TryGetValue(session, out PlayerData playerData))
         {
             return playerData;
         }
@@ -66,8 +66,21 @@ public class CacheServer
             return null;
         }
     }
-    public bool UpdatePlayerData(int id,PlayerData playerData)
+    public bool UpdatePlayerData(int id, PlayerData playerData)
     {
-        return db.UpdatePlayerData(id,playerData);
+        return db.UpdatePlayerData(id, playerData);
+    }
+    public void AcctOffLine(ServerSession serverSession)
+    {
+        foreach (var item in onLineAcct)
+        {
+            if (item.Value==serverSession)
+            {
+                onLineAcct.Remove(item.Key);
+                break;
+            }
+        }
+        bool succ=onLineSessionDic.Remove(serverSession);
+        PECommon.Log("账号下线,Session:"+serverSession.session);
     }
 }

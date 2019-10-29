@@ -41,6 +41,16 @@ namespace PEProtocol
         public int power;
         public int coin;
         public int diamond;
+
+        public int hp;
+        public int ad;
+        public int ap;
+        public int addef;
+        public int apdef;
+        public int dodge;//闪避概率
+        public int pierce;//穿透比率
+        public int critical;//暴击概率
+
     }
     [Serializable]
     public class ReqRename
