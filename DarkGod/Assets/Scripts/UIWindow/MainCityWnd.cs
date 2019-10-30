@@ -25,14 +25,21 @@ public class MainCityWnd : WindowRoot
     public Text txtExpPrg; 
 
     public Transform expProgramTrans;
+    public Animation menuAnim;
 
     #endregion
-    public Animation menuAnim;
+
     private bool menuState = true;//true是打开，false收起
+    private Vector2 clickPos = Vector2.zero;//点击的位置-摇杆背景图位置
+    private Vector2 defaultPos = Vector2.zero;//摇杆背景图的初始位置。
+    //UI自适应不能使用固定距离，要计算得出比率距离
+    private float pointDis = Screen.height * 1.0f / Constants.screenStandardHeight * Constants.screenOperationDistant;
 
     protected override void InitWnd()
     {
         base.InitWnd();
+
+        defaultPos = imgDirBg.transform.position;//默认位置为世界坐标
         SetActive(imgDirPoint,false);
         RegistrTouchEvts();
         RefreshUI();
@@ -77,6 +84,7 @@ public class MainCityWnd : WindowRoot
         }
     }
 
+    #region Click Events
     public void ClickMenuBtn()
     {
         audioSvc.PlayUIAudio(Constants.uiExtenBtn);
@@ -94,14 +102,48 @@ public class MainCityWnd : WindowRoot
         }
         menuAnim.Play(clip.name);
     }
+    public void ClickHeadBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.uiOpenPage);
+        MainCitySys.Instance.OpenInfoWnd();
+    }
 
     public void RegistrTouchEvts()
     {
         //添加监听器
-        PEListener listener = imgTouch.gameObject.AddComponent<PEListener>();
-        listener.onClickDown = (PointerEventData evt) =>
-          {
-              imgDirBg.transform.position = evt.position;
-          };
+        OnClickDown(imgTouch.gameObject, (PointerEventData evt) =>
+         {
+             clickPos = evt.position;
+             SetActive(imgDirPoint);
+             imgDirBg.transform.position = evt.position;
+         });
+        OnClickUP(imgTouch.gameObject, (PointerEventData evt) =>
+        {
+            imgDirBg.transform.position = defaultPos;
+            SetActive(imgDirPoint,false);
+            //小圆点位置设置为中心锚点的中间
+            imgDirPoint.transform.localPosition = Vector2.zero;
+            //方向信息传递
+            MainCitySys.Instance.SetMoveDir(Vector2.zero);
+        });
+        OnDrag(imgTouch.gameObject, (PointerEventData evt) =>
+        {
+            Vector2 dir = evt.position - clickPos;//得到拖拽的方向
+            //要把拖拽向量方向不变，但是距离限制
+            if (dir.magnitude>pointDis)
+            {
+                Vector2 clampDir = Vector2.ClampMagnitude(dir,pointDis);
+                //背景图位置+自身需要移动的
+                imgDirPoint.transform.position = clickPos + clampDir;
+            }
+            else
+            {
+                imgDirPoint.transform.position = evt.position;
+            }
+            //方向信息传递
+            MainCitySys.Instance.SetMoveDir(dir.normalized);
+        });
     }
+
+    #endregion
 }

@@ -570,7 +570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1489710752248890
 GameObject:
   m_ObjectHideFlags: 1
@@ -1167,6 +1167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345277ea21a3a80489db905f3438cc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imgTouch: {fileID: 114238108262590454}
+  imgDirBg: {fileID: 114345796507269530}
+  imgDirPoint: {fileID: 114643953868936466}
   txtFight: {fileID: 114650345914158782}
   txtLV: {fileID: 114924406862568892}
   txtPower: {fileID: 114935811608804894}

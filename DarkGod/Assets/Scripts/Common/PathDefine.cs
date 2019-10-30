@@ -10,7 +10,10 @@ using UnityEngine;
 
 public class PathDefine 
 {
-    #region
-    public const string RDName = "rdName";
+    #region Config
+    public const string RDName = "ResCfgs/rdName";
+    public const string MapCfg = "ResCfgs/map_format_v1";
     #endregion
+
+    public const string AssassinCityPlayerPrefab = "PrefabPlayer/AssassinCity";
 }

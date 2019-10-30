@@ -26,11 +26,18 @@ public class PEListener : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        
+        if (onClickUp != null)
+        {
+            onClickUp(eventData);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        
+        if (onDrag != null)
+        {
+            onDrag(eventData);
+        }
+
     }
 }
