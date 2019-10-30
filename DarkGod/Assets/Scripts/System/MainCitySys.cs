@@ -16,6 +16,7 @@ public class MainCitySys : SystemRoot
     public MainCityWnd cityWnd;
     public InfoWnd infoWnd;
 
+    private Transform charactorCamTrans;
     private PlayerController playerCtrl;
     public override void InitSys()
     {
@@ -37,6 +38,11 @@ public class MainCitySys : SystemRoot
             cityWnd.SetWndState();
             //背景音乐
             audioSvc.PlayBGMusic(Constants.BGMainCity);
+            //设置人物相机
+            if (charactorCamTrans!=null)
+            {
+                charactorCamTrans.gameObject.SetActive(false);
+            }
         });
     }
     private void LoadPlayer(MapConfig mapData)
@@ -68,6 +74,31 @@ public class MainCitySys : SystemRoot
     }
     public void OpenInfoWnd()
     {
+        if (charactorCamTrans==null)
+        {
+            charactorCamTrans = GameObject.FindGameObjectWithTag("CharactorCam").transform;
+        }
+        //设置相机的相对位置
+        charactorCamTrans.localPosition = playerCtrl.transform.position + playerCtrl.transform.forward * 3f + new Vector3(0, 1.2f, 0);
+        charactorCamTrans.localEulerAngles = new Vector3(0,180+playerCtrl.transform.localEulerAngles.y,0);
+        charactorCamTrans.localScale = Vector3.one;
+        charactorCamTrans.gameObject.SetActive(true);
         infoWnd.SetWndState();
+
+    }
+    public void CloseInfoWndCamera()
+    {
+        charactorCamTrans.gameObject.SetActive(false);
+    }
+    private float startPos = 0;
+    public void SetStartRotate()
+    {
+        startPos = playerCtrl.transform.localEulerAngles.y;
+    }
+    public void SetPlayerRotate(float rotate)
+    {
+        playerCtrl.transform.localEulerAngles = new Vector3(0,startPos+rotate,0);
+        //改变摄像机的朝向，不影响角色，但是传入的值存在问题，因为相对startPos，即使往回滑，还是负数
+        //charactorCamTrans.RotateAround(playerCtrl.transform.position,Vector3.up,rotate*0.3f*Time.deltaTime);
     }
 }

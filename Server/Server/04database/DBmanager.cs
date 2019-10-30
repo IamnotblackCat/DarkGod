@@ -120,7 +120,7 @@ public class DBmanager
         try
         {
             MySqlCommand cmd = new MySqlCommand
-                ("insert into account set acct=@acct,pass=@pass,name=@name,lv=@lv,power=@power,coin=@coin,diamond=@diamond,exp=@exp"+
+                ("insert into account set acct=@acct,pass=@pass,name=@name,lv=@lv,power=@power,coin=@coin,diamond=@diamond,exp=@exp,"+
                 "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical", conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("acct", acct);
@@ -195,7 +195,11 @@ public class DBmanager
             cmd.Parameters.AddWithValue("power",playerData.power);
             cmd.Parameters.AddWithValue("diamond",playerData.diamond);
             cmd.Parameters.AddWithValue("coin",playerData.coin);
+            cmd.Parameters.AddWithValue("hp",playerData.hp);
+            cmd.Parameters.AddWithValue("ad",playerData.ad);
+            cmd.Parameters.AddWithValue("ap",playerData.ap);
 
+            cmd.Parameters.AddWithValue("addef",playerData.addef);
             cmd.Parameters.AddWithValue("apdef", playerData.apdef);
             cmd.Parameters.AddWithValue("dodge", playerData.dodge);
             cmd.Parameters.AddWithValue("pierce", playerData.pierce);
