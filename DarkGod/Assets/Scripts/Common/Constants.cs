@@ -7,9 +7,45 @@
 *****************************************************/
 
 using UnityEngine;
+public enum TxtColor
+{
+    Red,
+    Green,
+    Blue,
+    Yellow,
 
+}
 public class Constants 
 {
+    //字体颜色
+    public const string ColorRed = "<color=#FF0000FF>";
+    public const string ColorGreen = "<color=#00FF00FF>";
+    public const string ColorBlue = "<color=#00B4FFFF>";
+    public const string ColorYellow = "<color=#FFFF00FF>";
+    public const string ColorEnd = "</color>";
+
+    public static string Color(string str,TxtColor color)
+    {
+        string result = "";
+        switch (color)
+        {
+            case TxtColor.Red:
+                result = ColorRed + str + ColorEnd;
+                break;
+            case TxtColor.Green:
+                result = ColorGreen + str + ColorEnd;
+                break;
+            case TxtColor.Blue:
+                result = ColorBlue + str + ColorEnd;
+                break;
+            case TxtColor.Yellow:
+                result = ColorYellow + str + ColorEnd;
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
     //AutoGuideNPC
     public const int NPCWiseMan = 0;
     public const int NPCGeneral = 1;

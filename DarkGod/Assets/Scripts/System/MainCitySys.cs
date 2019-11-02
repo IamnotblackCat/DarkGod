@@ -5,6 +5,7 @@
     日期：2019/10/25 9:28:35
 	功能：主城业务系统
 *****************************************************/
+using PEProtocol;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,7 +15,7 @@ public class MainCitySys : SystemRoot
     //单例
     public static MainCitySys Instance = null;
 
-    public MainCityWnd cityWnd;
+    public MainCityWnd mainCityWnd;
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
 
@@ -40,7 +41,7 @@ public class MainCitySys : SystemRoot
             //加载主角
             LoadPlayer(mapData);
             //打开UI
-            cityWnd.SetWndState();
+            mainCityWnd.SetWndState();
             //背景音乐
             audioSvc.PlayBGMusic(Constants.BGMainCity);
             GameObject go= GameObject.FindGameObjectWithTag("MapRoot");
@@ -170,7 +171,7 @@ public class MainCitySys : SystemRoot
         float distance = Vector3.Distance(playerCtrl.transform.position,
                npcTransPos[currentTask.npcID].position);
         //Debug.Log("IsNavOver:distance " + distance);
-        if (distance < 0.9f)
+        if (distance < 1f)
         {
             StopNavTask();
             OpenGuideWnd();
@@ -184,6 +185,37 @@ public class MainCitySys : SystemRoot
     public AutoGuideCfg GetGuideData()
     {
        return currentTask;
+    }
+    public void RspondGuide(GameMsg msg)
+    {
+        RspGuide data = msg.rspGuide;
+
+        GameRoot.instance.AddTips(Constants.Color("任务奖励 金币： " + currentTask.coin + " 经验： " + currentTask.exp,TxtColor.Blue));
+        switch (currentTask.actID)
+        {
+            case 0:
+                //智者对话
+                break;
+            case 1:
+                //进入副本
+                break;
+            case 2:
+                //强化
+                break;
+            case 3:
+                //体力购买
+                break;
+            case 4:
+                //铸造
+                break;
+            case 5:
+                //世界聊天
+                break;
+            default:
+                break;
+        }
+        GameRoot.instance.SetPlayerDataByGuide(data);
+        mainCityWnd.RefreshUI();
     }
     #endregion
 }

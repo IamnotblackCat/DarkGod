@@ -48,7 +48,7 @@ public class MainCityWnd : WindowRoot
         RegistrTouchEvts();
         RefreshUI();
     }
-    private void RefreshUI()
+    public void RefreshUI()
     {
         PlayerData pd = GameRoot.instance.Playerdata;
 
@@ -120,6 +120,7 @@ public class MainCityWnd : WindowRoot
                 spPath = PathDefine.TraderHead;
                 break;
             default:
+                spPath = PathDefine.TaskHead;
                 break;
         }
         SetSprite(image,spPath);

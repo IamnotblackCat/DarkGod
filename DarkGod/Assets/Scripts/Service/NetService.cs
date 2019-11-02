@@ -88,6 +88,10 @@ public class NetService : MonoBehaviour
         {
             switch ((ErroroCode)msg.err)
             {
+                case ErroroCode.ServerDataError:
+                    PECommon.Log("服务端数据异常", LogType.Error);
+                    GameRoot.instance.AddTips("客户端数据");
+                    break;
                 case ErroroCode.UpdateDBError:
                     PECommon.Log("数据库更新异常",LogType.Error);
                     GameRoot.instance.AddTips("网络不稳定");
@@ -110,6 +114,9 @@ public class NetService : MonoBehaviour
                 break;
             case CMD.RespondRename:
                 LoginSys.instance.RspRename(msg);
+                break;
+            case CMD.RspGuide:
+                MainCitySys.Instance.RspondGuide(msg);
                 break;
             default:
                 break;

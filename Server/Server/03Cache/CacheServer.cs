@@ -55,7 +55,7 @@ public class CacheServer
     {
         return db.QueryNameIsExist(name);
     }
-    public PlayerData UpdatePlayerData(ServerSession session)
+    public PlayerData GetPlayerDataBySession(ServerSession session)
     {
         if (onLineSessionDic.TryGetValue(session, out PlayerData playerData))
         {

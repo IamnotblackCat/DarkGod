@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dff7de6c4264344eb6f6ffc9938e37b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cityWnd: {fileID: 113888516}
+  mainCityWnd: {fileID: 113888516}
   infoWnd: {fileID: 1932268357}
   guideWnd: {fileID: 3357539}
 --- !u!81 &390554393
@@ -2162,6 +2162,11 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114289007365405742, guid: 93569979adc79d545afeadd582a00549,
+        type: 2}
+      propertyPath: m_Text
+      value: "\u6C99\u96D5\u6C38\u8FDC\u4E0D\u5ACC\u591A"
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114318922868904732, guid: 93569979adc79d545afeadd582a00549, type: 2}

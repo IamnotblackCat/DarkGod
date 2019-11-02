@@ -92,7 +92,7 @@ public class LoginSys
         //不存在，更新缓存和数据库数据
         else
         {
-            PlayerData playerData = cacheSrv.UpdatePlayerData(pack.serverSession);
+            PlayerData playerData = cacheSrv.GetPlayerDataBySession(pack.serverSession);
             playerData.name = data.name;
             //数据库更新出错
             if (!cacheSrv.UpdatePlayerData(playerData.id,playerData))
