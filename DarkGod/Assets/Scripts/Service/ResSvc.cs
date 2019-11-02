@@ -22,6 +22,7 @@ public class ResSvc : MonoBehaviour
         instance = this;
         InitRDNameCfg(PathDefine.RDName);
         InitMapCfg(PathDefine.MapCfg);
+        InitGuideCfg(PathDefine.GuideCfg);
         PECommon.Log("启动资源加载...");
     }
     private Action prgCB = null;//这个委托为了能在update里面实时更新进度值
@@ -92,6 +93,18 @@ public class ResSvc : MonoBehaviour
         }
         //Debug.Log(go.name+"---"+prefab.name+"--"+path.ToString());
         return go;
+    }
+
+    private Dictionary<string, Sprite> spriteDic = new Dictionary<string, Sprite>();
+    public Sprite LoadSprite(string path,bool chche =false)
+    {
+        Sprite sp = null;
+        if (!spriteDic.TryGetValue(path,out sp))
+        {
+            sp = Resources.Load<Sprite>(path);
+            return sp;
+        }
+        return null;
     }
     #region InitCfgs
     #region 初始化名字配置
@@ -241,5 +254,76 @@ public class ResSvc : MonoBehaviour
         return null;
     }
     #endregion 地图
+
+    #region 自动任务
+    private Dictionary<int, AutoGuideCfg> autoGuideDic = new Dictionary<int, AutoGuideCfg>();
+    private void InitGuideCfg(string path)
+    {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml)
+        {
+            PECommon.Log("指定文件不存在，路径：" + path, LogType.Error);
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+            //选中子节点集合
+            XmlNodeList nodList = doc.SelectSingleNode("root").ChildNodes;
+            for (int i = 0; i < nodList.Count; i++)
+            {
+                XmlElement ele = nodList[i] as XmlElement;
+                if (ele.GetAttributeNode("ID") == null)
+                {//不包含ID的节点，直接跳到下一个遍历，安全校验
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                AutoGuideCfg guideCfg = new AutoGuideCfg();
+                guideCfg.ID = ID;
+
+                foreach (XmlElement element in nodList[i].ChildNodes)
+                {
+                    switch (element.Name)
+                    {
+                        case "npcID":
+                            guideCfg.npcID =int.Parse(element.InnerText);
+                            break;
+                        case "dilogArr":
+                            {
+                                //string strArray = element.InnerText;
+                                guideCfg.dilogArr = element.InnerText;
+                            }
+                            break;
+                        case "actID":
+                            guideCfg.actID = int.Parse(element.InnerText);
+                            break;
+                        case "coin":
+                            guideCfg.coin = int.Parse(element.InnerText);
+                            break;
+                        case "exp":
+                            guideCfg.exp = int.Parse(element.InnerText);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                autoGuideDic.Add(ID, guideCfg);
+                //Debug.Log("ID:"+ID+"  mapCfg:"+mapCfg.ToString());
+            }
+        }
+    }
+    public AutoGuideCfg GetGuideCfgData(int id)
+    {
+        AutoGuideCfg agc = null;
+
+        //Debug.Log(id);
+        if (autoGuideDic.TryGetValue(id, out agc))
+        {
+            //Debug.Log(data);
+            return agc;
+        }
+        return null;
+    } 
+    #endregion
     #endregion
 }

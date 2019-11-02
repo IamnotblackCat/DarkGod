@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         ctrl.Move(transform.forward*Time.deltaTime*Constants.playerMoveSpeed);
     }
-    private void SetCamera()
+    public void SetCamera()
     {
         camMainTrans.transform.position = transform.position + cameraOffset;
     }

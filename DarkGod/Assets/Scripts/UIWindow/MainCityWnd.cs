@@ -22,7 +22,9 @@ public class MainCityWnd : WindowRoot
     public Text txtPower;
     public Image imgPowerPrg;
     public Text txtName;
-    public Text txtExpPrg; 
+    public Text txtExpPrg;
+
+    public Button btnGuide;
 
     public Transform expProgramTrans;
     public Animation menuAnim;
@@ -32,6 +34,8 @@ public class MainCityWnd : WindowRoot
     private bool menuState = true;//true是打开，false收起
     private Vector2 clickPos = Vector2.zero;//点击的位置-摇杆背景图位置
     private Vector2 defaultPos = Vector2.zero;//摇杆背景图的初始位置。
+    private AutoGuideCfg currentTaskData;
+
     //UI自适应不能使用固定距离，要计算得出比率距离
     private float pointDis = Screen.height * 1.0f / Constants.screenStandardHeight * Constants.screenOperationDistant;
 
@@ -55,36 +59,84 @@ public class MainCityWnd : WindowRoot
         imgPowerPrg.fillAmount = pd.power * 1.0f / PECommon.GetPowerLimit(pd.lv);
         SetText(txtName,pd.name);
 
-        int expValPercent = (int)(pd.exp * 1.0f / PECommon.GetExpUpValByLv(pd.lv)*100);
-        SetText(txtExpPrg,expValPercent+"%");
+        #region ExpProgress
+        int expValPercent = (int)(pd.exp * 1.0f / PECommon.GetExpUpValByLv(pd.lv) * 100);
+        SetText(txtExpPrg, expValPercent + "%");
         int index = expValPercent / 10;
         GridLayoutGroup grid = expProgramTrans.GetComponent<GridLayoutGroup>();
         //得到 标准高度和当前高度的比例，然后乘以当前宽度得到真实宽度，然后减掉间隙计算经验条宽度
         float screenRate = 1.0f * Constants.screenStandardHeight / Screen.height;
         float screenWidth = Screen.width * screenRate;
         float width = (screenWidth - 180) / 10;
-        
-        grid.cellSize = new Vector2(width,7);
+
+        grid.cellSize = new Vector2(width, 7);
 
         for (int i = 0; i < expProgramTrans.childCount; i++)
         {
             Image expImageValue = expProgramTrans.GetChild(i).GetComponent<Image>();
-            if (i<index)
+            if (i < index)
             {
                 expImageValue.fillAmount = 1;
             }
-            else if (i==index)
+            else if (i == index)
             {
-                expImageValue.fillAmount = expValPercent*1.0f % 10 / 10;
+                expImageValue.fillAmount = expValPercent * 1.0f % 10 / 10;
             }
             else
             {
                 expImageValue.fillAmount = 0;
             }
         }
-    }
+        #endregion
 
+        //设置自动任务图标
+        currentTaskData = resSvc.GetGuideCfgData(pd.guideid);
+        if (currentTaskData!=null)
+        {
+            SetGuideBtnIcon(currentTaskData.npcID);
+        }
+        else
+        {//没任务就显示默认图标
+            SetGuideBtnIcon(-1);
+        }
+    }
+    //根据任务的不同设置不同的NPC头像
+    private void SetGuideBtnIcon(int npcID)
+    {
+        string spPath = "";
+        Image image = btnGuide.GetComponent<Image>();
+        switch (npcID)
+        {
+            case Constants.NPCWiseMan:
+                spPath = PathDefine.WiseHead;
+                break;
+            case Constants.NPCGeneral:
+                spPath = PathDefine.GeneralHead;
+                break;
+            case Constants.NPCArtisan:
+                spPath = PathDefine.ArtisanHead;
+                break;
+            case Constants.NPCTrader:
+                spPath = PathDefine.TraderHead;
+                break;
+            default:
+                break;
+        }
+        SetSprite(image,spPath);
+    }
     #region Click Events
+    public void ClickGuideBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.uiClick);
+        if (currentTaskData!=null)
+        {
+            MainCitySys.Instance.RunTask(currentTaskData);
+        }
+        else
+        {
+            GameRoot.instance.AddTips("更多引导，正在开发中，敬请期待。。。");
+        }
+    }
     public void ClickMenuBtn()
     {
         audioSvc.PlayUIAudio(Constants.uiExtenBtn);

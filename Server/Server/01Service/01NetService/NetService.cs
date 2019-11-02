@@ -75,6 +75,9 @@ public class NetService
             case CMD.ReqRename:
                 LoginSys.Instance.ReqRename(msgPack);
                 break;
+            case CMD.ReqGuide:
+                GuideSys.Instance.ReqGuide(msgPack);
+                break;
             default:
                 break;
         }

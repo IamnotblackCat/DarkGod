@@ -83,6 +83,12 @@ public class WindowRoot : MonoBehaviour
     {
         SetText(text, num.ToString());
     }
+    //加载图片
+    protected void SetSprite(Image image,string path)
+    {
+        Sprite sp = resSvc.LoadSprite(path,true);
+        image.sprite = sp;
+    }
     #endregion
     protected T GetOrAddComponent<T>(GameObject go) where T : Component
     {
@@ -111,4 +117,5 @@ public class WindowRoot : MonoBehaviour
         listener.onDrag = cb;
     }
     #endregion
+    
 }

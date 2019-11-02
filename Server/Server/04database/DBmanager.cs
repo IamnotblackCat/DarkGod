@@ -69,8 +69,9 @@ public class DBmanager
                         apdef = reader.GetInt32("apdef"),
                         dodge = reader.GetInt32("dodge"),
                         pierce = reader.GetInt32("pierce"),
-                        critical = reader.GetInt32("critical")
+                        critical = reader.GetInt32("critical"),
 
+                        guideid = reader.GetInt32("guideid")
                     };
                 }
             }
@@ -92,11 +93,11 @@ public class DBmanager
                 {
                     id = -1,
                     name = "",
-                    lv=1,
-                    exp=0,
-                    coin=5000,
-                    diamond=500,
-                    power=150,
+                    lv = 1,
+                    exp = 0,
+                    coin = 5000,
+                    diamond = 500,
+                    power = 150,
 
                     hp = 2000,
                     ad = 275,
@@ -107,6 +108,7 @@ public class DBmanager
                     pierce = 5,
                     critical = 2,
 
+                    guideid = 1001
                 };
                 //这一行代码很重要，id要重新设置为自动增加的id，否则所有新建账号的id都是-1了
                 pd.id= InsertNewAcctData(acct,pass,pd);
@@ -121,7 +123,7 @@ public class DBmanager
         {
             MySqlCommand cmd = new MySqlCommand
                 ("insert into account set acct=@acct,pass=@pass,name=@name,lv=@lv,power=@power,coin=@coin,diamond=@diamond,exp=@exp,"+
-                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical", conn);
+                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid=@guideid", conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("acct", acct);
             cmd.Parameters.AddWithValue("pass", pass);
@@ -140,6 +142,8 @@ public class DBmanager
             cmd.Parameters.AddWithValue("dodge",pd.dodge);
             cmd.Parameters.AddWithValue("pierce",pd.pierce);
             cmd.Parameters.AddWithValue("critical",pd.critical);
+
+            cmd.Parameters.AddWithValue("guideid", pd.guideid);
 
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId;
@@ -187,7 +191,7 @@ public class DBmanager
         {//判断信息的条件是id
             MySqlCommand cmd = new MySqlCommand
                 ("Update account set name=@name,lv=@lv,exp=@exp,power=@power,diamond=@diamond,coin=@coin,"+
-                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical where id=@id", conn);
+                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid=@guideid where id=@id", conn);
             cmd.Parameters.AddWithValue("id",id);
             cmd.Parameters.AddWithValue("name",playerData.name);
             cmd.Parameters.AddWithValue("lv",playerData.lv);
@@ -205,6 +209,7 @@ public class DBmanager
             cmd.Parameters.AddWithValue("pierce", playerData.pierce);
             cmd.Parameters.AddWithValue("critical", playerData.critical);
 
+            cmd.Parameters.AddWithValue("guideid",playerData.guideid);
             //执行查询
             cmd.ExecuteNonQuery();
         }

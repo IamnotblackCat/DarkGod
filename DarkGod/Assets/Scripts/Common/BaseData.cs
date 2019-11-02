@@ -1,6 +1,14 @@
 ﻿
 using UnityEngine;
 
+public class AutoGuideCfg : BaseData<AutoGuideCfg>
+{
+    public int npcID;//触发任务的npcID
+    public string dilogArr;
+    public int actID;
+    public int coin;
+    public int exp;
+}
 public class BaseData<T>
 {
     public int ID;

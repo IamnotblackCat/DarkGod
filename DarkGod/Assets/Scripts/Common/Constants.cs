@@ -10,6 +10,12 @@ using UnityEngine;
 
 public class Constants 
 {
+    //AutoGuideNPC
+    public const int NPCWiseMan = 0;
+    public const int NPCGeneral = 1;
+    public const int NPCArtisan = 2;
+    public const int NPCTrader = 3;
+
     //场景类名、ID
     public const string SceneLogin = "SceneLogin";
     //public const string SceneMainCity = "SceneMainCity";

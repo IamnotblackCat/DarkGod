@@ -16,8 +16,12 @@ namespace PEProtocol
     {//这里的目的是将信息进行分类区分，明确信息的意义
         public RequestLogin reqLogin;
         public ResponLogin respLogin;
+
         public ReqRename reqRename;
         public RespondRename respondRename;
+
+        public ReqGuide reqGuide;
+        public RspGuide rspGuide;
     }
     #region 登陆相关
     [Serializable]
@@ -51,6 +55,8 @@ namespace PEProtocol
         public int pierce;//穿透比率
         public int critical;//暴击概率
 
+        public int guideid;//引导任务ID
+        //TOADD
     }
     [Serializable]
     public class ReqRename
@@ -62,10 +68,24 @@ namespace PEProtocol
     {
         public string name;
     }
+    [Serializable]
+    public class ReqGuide
+    {
+        public int guidid;
+    }
+    [Serializable]
+    public class RspGuide
+    {
+        public int guideid;
+        public int coin;
+        public int exp;
+        public int lv;
+    }
     #endregion
     public enum ErroroCode
     {
         None=0,//没有错误
+        ServerDataError,//服务器数据异常
         UpdateDBError,//数据库更新出错
         AcctIsOnline,//账号已经上线
         WrongPass,
@@ -79,6 +99,10 @@ namespace PEProtocol
         ResponLogin=102,
         ReqRename=103,
         RespondRename=104,
+
+        //主城相关
+        ReqGuide=200,
+        RspGuide=201,
     }
     public class ServiceConfig
     {
