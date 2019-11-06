@@ -18,6 +18,7 @@ public class MainCitySys : SystemRoot
     public MainCityWnd mainCityWnd;
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
+    public StrengthWnd strengthWnd;
 
     private Transform charactorCamTrans;
     private PlayerController playerCtrl;
@@ -217,5 +218,12 @@ public class MainCitySys : SystemRoot
         GameRoot.instance.SetPlayerDataByGuide(data);
         mainCityWnd.RefreshUI();
     }
+    #endregion
+
+    #region 强化信息相关
+    public void OpenStrengthWnd()
+    {
+        strengthWnd.SetWndState();
+    } 
     #endregion
 }

@@ -100,6 +100,12 @@ public class WindowRoot : MonoBehaviour
         return t;
     }
     #region Click Events
+    protected void OnClick(GameObject go,Action<object> cb, object args)
+    {
+        PEListener listener = GetOrAddComponent<PEListener>(go);
+        listener.onClick = cb;
+        listener.args = args;
+    }
 
     protected void OnClickDown(GameObject go, Action<PointerEventData> cb)
     {

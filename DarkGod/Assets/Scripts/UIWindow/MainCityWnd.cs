@@ -160,7 +160,11 @@ public class MainCityWnd : WindowRoot
         audioSvc.PlayUIAudio(Constants.uiOpenPage);
         MainCitySys.Instance.OpenInfoWnd();
     }
-
+    public void ClickStrengthBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.uiOpenPage);
+        MainCitySys.Instance.OpenStrengthWnd();
+    }
     public void RegistrTouchEvts()
     {
         //添加监听器
