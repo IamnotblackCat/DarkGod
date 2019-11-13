@@ -78,6 +78,9 @@ public class NetService
             case CMD.ReqGuide:
                 GuideSys.Instance.ReqGuide(msgPack);
                 break;
+            case CMD.ReqStrong:
+                StrongSys.Instance.ReqStrong(msgPack);
+                break;
             default:
                 break;
         }

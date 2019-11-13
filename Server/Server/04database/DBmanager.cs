@@ -34,6 +34,7 @@ public class DBmanager
 
        //QueryPlayerdata("xxxxx","111111");
     }
+    //查询
     public PlayerData QueryPlayerdata(string acct,string pass)
     {
         PlayerData pd =null;
@@ -61,6 +62,7 @@ public class DBmanager
                         power = reader.GetInt32("power"),
                         exp = reader.GetInt32("exp"),
                         name = reader.GetString("name"),
+                        crystal = reader.GetInt32("crystal"),
 
                         hp = reader.GetInt32("hp"),
                         ad = reader.GetInt32("ad"),
@@ -72,7 +74,31 @@ public class DBmanager
                         critical = reader.GetInt32("critical"),
 
                         guideid = reader.GetInt32("guideid")
+
+                    
                     };
+                    #region 强化升级
+                    //强化数据保存格式为：1#2#2#4#4#7#,共六个部位，#号分割，索引代表部位，索引上的值代表星级
+                    string[] strengthStrArr = reader.GetString("strong").Split('#');
+
+                    int[] _strengthArr = new int[6];
+                    for (int i = 0; i < strengthStrArr.Length; i++)
+                    {
+                        if (strengthStrArr[i] == "")
+                        {
+                            continue;
+                        }
+                        if (int.TryParse(strengthStrArr[i], out int starlv))
+                        {
+                            _strengthArr[i] = starlv;
+                        }
+                        else
+                        {
+                            PECommon.Log("强化数据错误", LogType.Error);
+                        }
+                    }
+                    pd.strengthArray = _strengthArr; 
+                    #endregion
                 }
             }
 
@@ -98,6 +124,7 @@ public class DBmanager
                     coin = 5000,
                     diamond = 500,
                     power = 150,
+                    crystal=500,
 
                     hp = 2000,
                     ad = 275,
@@ -108,7 +135,9 @@ public class DBmanager
                     pierce = 5,
                     critical = 2,
 
-                    guideid = 1001
+                    guideid = 1001,
+                    strengthArray = new int[6],
+                    //TOADD
                 };
                 //这一行代码很重要，id要重新设置为自动增加的id，否则所有新建账号的id都是-1了
                 pd.id= InsertNewAcctData(acct,pass,pd);
@@ -123,7 +152,8 @@ public class DBmanager
         {
             MySqlCommand cmd = new MySqlCommand
                 ("insert into account set acct=@acct,pass=@pass,name=@name,lv=@lv,power=@power,coin=@coin,diamond=@diamond,exp=@exp,"+
-                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid=@guideid", conn);
+                "crystal=@crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid=@guideid,"+
+                "strong=@strong", conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("acct", acct);
             cmd.Parameters.AddWithValue("pass", pass);
@@ -144,6 +174,15 @@ public class DBmanager
             cmd.Parameters.AddWithValue("critical",pd.critical);
 
             cmd.Parameters.AddWithValue("guideid", pd.guideid);
+            cmd.Parameters.AddWithValue("crystal",pd.crystal);
+
+            string strongInfo = "";
+            for (int i = 0; i < pd.strengthArray.Length; i++)
+            {
+                strongInfo += pd.strengthArray[i];
+                strongInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("strong",strongInfo);
 
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId;
@@ -191,7 +230,9 @@ public class DBmanager
         {//判断信息的条件是id
             MySqlCommand cmd = new MySqlCommand
                 ("Update account set name=@name,lv=@lv,exp=@exp,power=@power,diamond=@diamond,coin=@coin,"+
-                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid=@guideid where id=@id", conn);
+                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,crystal=@crystal," +
+                "critical=@critical,guideid=@guideid,strong=@strong where id=@id", conn);
+
             cmd.Parameters.AddWithValue("id",id);
             cmd.Parameters.AddWithValue("name",playerData.name);
             cmd.Parameters.AddWithValue("lv",playerData.lv);
@@ -210,6 +251,15 @@ public class DBmanager
             cmd.Parameters.AddWithValue("critical", playerData.critical);
 
             cmd.Parameters.AddWithValue("guideid",playerData.guideid);
+            cmd.Parameters.AddWithValue("crystal", playerData.crystal);
+
+            string strongInfo = "";
+            for (int i = 0; i < playerData.strengthArray.Length; i++)
+            {
+                strongInfo += playerData.strengthArray[i];
+                strongInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("strong", strongInfo);
             //执行查询
             cmd.ExecuteNonQuery();
         }

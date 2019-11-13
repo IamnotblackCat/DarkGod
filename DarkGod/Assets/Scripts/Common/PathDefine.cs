@@ -14,6 +14,22 @@ public class PathDefine
     public const string RDName = "ResCfgs/rdName";
     public const string MapCfg = "ResCfgs/map_format_v1";
     public const string GuideCfg = "ResCfgs/guideCfg";
+    public const string StrengthCfg = "ResCfgs/strengthCfg";
+    #endregion
+
+    #region 强化
+    public const string ItemArrorBG = "ResImages/btnstrong";
+    public const string ItemPlatBG = "ResImages/charbg3";
+
+    public const string ItemHead = "ResImages/toukui";
+    public const string ItemBody = "ResImages/body";
+    public const string ItemWaist = "ResImages/yaobu";
+    public const string ItemHand = "ResImages/hand";
+    public const string ItemLeg = "ResImages/leg";
+    public const string ItemFoot = "ResImages/foot";
+
+    public const string StarIcon1 = "ResImages/star1";//空心
+    public const string StarIcon2 = "ResImages/star2";//实心
     #endregion
 
     #region AutoGuide

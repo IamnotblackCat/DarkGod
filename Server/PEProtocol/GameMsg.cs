@@ -22,6 +22,9 @@ namespace PEProtocol
 
         public ReqGuide reqGuide;
         public RspGuide rspGuide;
+
+        public ReqStrong reqStrong;
+        public ResStrong resStrong;
     }
     #region 登陆相关
     [Serializable]
@@ -45,6 +48,7 @@ namespace PEProtocol
         public int power;
         public int coin;
         public int diamond;
+        public int crystal;
 
         public int hp;
         public int ad;
@@ -56,6 +60,7 @@ namespace PEProtocol
         public int critical;//暴击概率
 
         public int guideid;//引导任务ID
+        public int[] strengthArray;//强化——数组索引代表的是装备位置，索引位置的数值代表强化的星级。。。这个需要有足够的经验和分析能力
         //TOADD
     }
     [Serializable]
@@ -81,6 +86,23 @@ namespace PEProtocol
         public int exp;
         public int lv;
     }
+    [Serializable]
+    public class ReqStrong
+    {
+        public int pos;
+    }
+    [Serializable]
+    public class ResStrong
+    {
+        public int coin;
+        public int crystal;
+        public int hp;
+        public int ad;
+        public int ap;
+        public int addef;
+        public int apdef;
+        public int[] strongArr;
+    }
     #endregion
     public enum ErroroCode
     {
@@ -90,6 +112,10 @@ namespace PEProtocol
         AcctIsOnline,//账号已经上线
         WrongPass,
         NameIsExist,//名字已存在
+
+        lackCoin,
+        lackCrystal,
+        lackLv,
     }
     public enum CMD
     {
@@ -100,9 +126,13 @@ namespace PEProtocol
         ReqRename=103,
         RespondRename=104,
 
+
         //主城相关
-        ReqGuide=200,
-        RspGuide=201,
+        ReqGuide=201,
+        RspGuide=202,
+
+        ReqStrong=203,
+        ResStrong=204,
     }
     public class ServiceConfig
     {

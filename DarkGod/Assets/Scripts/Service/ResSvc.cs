@@ -23,6 +23,7 @@ public class ResSvc : MonoBehaviour
         InitRDNameCfg(PathDefine.RDName);
         InitMapCfg(PathDefine.MapCfg);
         InitGuideCfg(PathDefine.GuideCfg);
+        InitStrengthCfg(PathDefine.StrengthCfg);
         PECommon.Log("启动资源加载...");
     }
     private Action prgCB = null;//这个委托为了能在update里面实时更新进度值
@@ -96,15 +97,18 @@ public class ResSvc : MonoBehaviour
     }
 
     private Dictionary<string, Sprite> spriteDic = new Dictionary<string, Sprite>();
-    public Sprite LoadSprite(string path,bool chche =false)
+    public Sprite LoadSprite(string path,bool cache =false)
     {
         Sprite sp = null;
         if (!spriteDic.TryGetValue(path,out sp))
         {
             sp = Resources.Load<Sprite>(path);
-            return sp;
+            if (cache)
+            {
+                spriteDic.Add(path,sp);
+            }
         }
-        return null;
+        return sp;
     }
     #region InitCfgs
     #region 初始化名字配置
@@ -323,7 +327,129 @@ public class ResSvc : MonoBehaviour
             return agc;
         }
         return null;
-    } 
+    }
+    #endregion
+
+    #region 强化配置
+    private Dictionary<int, Dictionary<int, StrengthCfg>> strengthDic = new Dictionary<int, Dictionary<int, StrengthCfg>>();
+    private void InitStrengthCfg(string path)
+    {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml)
+        {
+            PECommon.Log("指定文件不存在，路径：" + path, LogType.Error);
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+            //选中子节点集合
+            XmlNodeList nodList = doc.SelectSingleNode("root").ChildNodes;
+            for (int i = 0; i < nodList.Count; i++)
+            {
+                XmlElement ele = nodList[i] as XmlElement;
+                if (ele.GetAttributeNode("ID") == null)
+                {//不包含ID的节点，直接跳到下一个遍历，安全校验
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                StrengthCfg sd = new StrengthCfg {ID=ID };
+
+                foreach (XmlElement element in nodList[i].ChildNodes)
+                {
+                    switch (element.Name)
+                    {
+                        case "pos":
+                            sd.pos = int.Parse(element.InnerText);
+                            break;
+                        case "starlv":
+                            sd.startlv = int.Parse(element.InnerText);
+                            break;
+                        case "coin":
+                            sd.coin = int.Parse(element.InnerText);
+                            break;
+                        case "crystal":
+                            sd.crystal = int.Parse(element.InnerText);
+                            break;
+                        case "addhp":
+                            sd.addhp = int.Parse(element.InnerText);
+                            break;
+                        case "addhurt":
+                            sd.addhurt = int.Parse(element.InnerText);
+                            break;
+                        case "adddef":
+                            sd.adddef = int.Parse(element.InnerText);
+                            break;
+                        case "minlv":
+                            sd.minlv = int.Parse(element.InnerText);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                Dictionary<int, StrengthCfg> dic = null;
+                if (strengthDic.TryGetValue(sd.pos, out dic))
+                {
+                    dic.Add(sd.startlv, sd);
+                }
+                else
+                {
+                    dic = new Dictionary<int, StrengthCfg>();
+                    dic.Add(sd.startlv, sd);
+
+                    strengthDic.Add(sd.pos, dic);
+                }
+                //strengthDic.Add(ID, strengthCfg);
+                //Debug.Log("ID:"+ID+"  mapCfg:"+mapCfg.ToString());
+            }
+        }
+    }
+    public StrengthCfg GetStrengthCfgData(int pos,int startlv)
+    {
+        StrengthCfg sc = null;
+        Dictionary<int, StrengthCfg> dic = null;
+        //Debug.Log(id);
+        if (strengthDic.TryGetValue(pos,out dic))
+        {
+            //Debug.Log(data);
+            if (dic.ContainsKey(startlv))
+            {
+                sc = dic[startlv];
+            }
+        }
+        return sc;
+    }
+
+    public int GetPropAddValPreLv(int pos,int starlv,int type)
+    {
+        Dictionary<int, StrengthCfg> posDic = null;
+        int val = 0;
+        if (strengthDic.TryGetValue(pos,out posDic))
+        {
+            for (int i = 0; i < starlv; i++)
+            {
+                StrengthCfg sc;
+                if (posDic.TryGetValue(i,out sc))
+                {
+                    switch (type)
+                    {
+                        case 1://hp
+                            val += sc.addhp;
+                            break;
+                        case 2://伤害
+                            val += sc.addhurt;
+                            break;
+                        case 3://防御
+                            val += sc.adddef;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        return val; 
+    }
     #endregion
     #endregion
 }
